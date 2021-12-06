@@ -22,11 +22,8 @@
             style="max-height: 50px;">
         </span>
       </a> -->
-    <app-recipe-item
-      *ngFor="let recipe of recipes"
-      [recipe]="recipe"
-      (recipeSelected)="onRecipeSelected(recipe)">
-      
-    ></app-recipe-item>
+    <app-recipe-item *ngFor="let recipe of recipes" [recipe]="recipe">
+      ></app-recipe-item
+    >
   </div>
 </div>
