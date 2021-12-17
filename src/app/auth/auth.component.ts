@@ -3,7 +3,7 @@ import {
   ComponentFactoryResolver,
   ViewChild,
   OnDestroy,
-  OnInit,
+  OnInit
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -16,14 +16,13 @@ import * as AuthActions from './store/auth.actions';
 
 @Component({
   selector: 'app-auth',
-  templateUrl: './auth.component.html',
+  templateUrl: './auth.component.html'
 })
 export class AuthComponent implements OnInit, OnDestroy {
   isLoginMode = true;
   isLoading = false;
   error: string = null;
-  @ViewChild(PlaceholderDirective, { static: false })
-  alertHost: PlaceholderDirective;
+  @ViewChild(PlaceholderDirective, { static: false }) alertHost: PlaceholderDirective;
 
   private closeSub: Subscription;
   private storeSub: Subscription;
@@ -34,7 +33,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.storeSub = this.store.select('auth').subscribe((authState) => {
+    this.storeSub = this.store.select('auth').subscribe(authState => {
       this.isLoading = authState.loading;
       this.error = authState.authError;
       if (this.error) {
@@ -57,11 +56,11 @@ export class AuthComponent implements OnInit, OnDestroy {
     if (this.isLoginMode) {
       // authObs = this.authService.login(email, password);
       this.store.dispatch(
-        new AuthActions.LoginStart({ email: email, password: password })
+        AuthActions.loginStart({ email, password })
       );
     } else {
       this.store.dispatch(
-        new AuthActions.SignupStart({ email: email, password: password })
+        AuthActions.signupStart({ email, password })
       );
     }
 
@@ -69,7 +68,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   onHandleError() {
-    this.store.dispatch(new AuthActions.ClearError());
+    this.store.dispatch(AuthActions.clearError());
   }
 
   ngOnDestroy() {
@@ -83,8 +82,9 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   private showErrorAlert(message: string) {
     // const alertCmp = new AlertComponent();
-    const alertCmpFactory =
-      this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+    const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(
+      AlertComponent
+    );
     const hostViewContainerRef = this.alertHost.viewContainerRef;
     hostViewContainerRef.clear();
 
