@@ -11,7 +11,7 @@ import * as RecipesActions from '../store/recipe.actions';
 @Component({
   selector: 'app-recipe-edit',
   templateUrl: './recipe-edit.component.html',
-  styleUrls: ['./recipe-edit.component.css']
+  styleUrls: ['./recipe-edit.component.css'],
 })
 export class RecipeEditComponent implements OnInit, OnDestroy {
   id: number;
@@ -47,14 +47,16 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     if (this.editMode) {
       // this.recipeService.updateRecipe(this.id, this.recipeForm.value);
       this.store.dispatch(
-        new RecipesActions.UpdateRecipe({
+        RecipesActions.updateRecipe({
           index: this.id,
-          newRecipe: this.recipeForm.value
+          recipe: this.recipeForm.value,
         })
       );
     } else {
       // this.recipeService.addRecipe(this.recipeForm.value);
-      this.store.dispatch(new RecipesActions.AddRecipe(this.recipeForm.value));
+      this.store.dispatch(
+        RecipesActions.addRecipe({ recipe: this.recipeForm.value })
+      );
     }
     this.onCancel();
   }
@@ -65,8 +67,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
         name: new FormControl(null, Validators.required),
         amount: new FormControl(null, [
           Validators.required,
-          Validators.pattern(/^[1-9]+[0-9]*$/)
-        ])
+          Validators.pattern(/^[1-9]+[0-9]*$/),
+        ]),
       })
     );
   }
@@ -96,13 +98,13 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
       this.storeSub = this.store
         .select('recipes')
         .pipe(
-          map(recipeState => {
+          map((recipeState) => {
             return recipeState.recipes.find((recipe, index) => {
               return index === this.id;
             });
           })
         )
-        .subscribe(recipe => {
+        .subscribe((recipe) => {
           recipeName = recipe.name;
           recipeImagePath = recipe.imagePath;
           recipeDescription = recipe.description;
@@ -113,8 +115,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
                   name: new FormControl(ingredient.name, Validators.required),
                   amount: new FormControl(ingredient.amount, [
                     Validators.required,
-                    Validators.pattern(/^[1-9]+[0-9]*$/)
-                  ])
+                    Validators.pattern(/^[1-9]+[0-9]*$/),
+                  ]),
                 })
               );
             }
@@ -126,7 +128,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
       name: new FormControl(recipeName, Validators.required),
       imagePath: new FormControl(recipeImagePath, Validators.required),
       description: new FormControl(recipeDescription, Validators.required),
-      ingredients: recipeIngredients
+      ingredients: recipeIngredients,
     });
   }
 }
